@@ -36,7 +36,9 @@ export interface Pagination extends QueryStringParams {
   offset?: number;
 }
 
-// TODO - Revisar este tipo para validar mapeos
+/**
+ * @todo Use this type for mapping
+ */
 export type PokeEndpointMapper = {
   [Endpoint in PokeApiEndpoint]: {
     [PokeApiEndpoint.Pokemon]: Pokemon;

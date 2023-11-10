@@ -12,9 +12,11 @@ export class CacheInterceptor implements HttpInterceptor {
 
   // private readonly cache: Map<HttpRequest<unknown>, HttpResponse<unknown>> = new Map();
 
+  /**
+   * @todo Implement cache
+   */
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
 
-    /* TODO - Implement cache */
     return next.handle(request);
       // .pipe(
       //   tap({

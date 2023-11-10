@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { EnvService } from './env.service';
 import { Injectable } from '@angular/core';
-import { Pagination, PokeApiEndpoint, PokeApiResponse, QueryStringParams } from '@models/poke-api';
+import { Pagination, PokeApiPaginationInfo, PokeApiResponse, QueryStringParams } from '@models/poke-api';
 import { mergeMap, of, reduce } from 'rxjs';
+import { PokeApiEndpoint, PokeEndpointMapper } from '@models/poke-api-endpoint';
 
 /**
  * General service for all endpoints that share the structure defined in
@@ -31,19 +32,22 @@ export class PokeApiService {
     );
   }
 
-  getListOf<Resource>(endpoint: PokeApiEndpoint, pagination?: Pagination) {
-    let mappedResponse: PokeApiResponse<Resource> = {
+  getListOf<const Endpoint extends PokeApiEndpoint>(endpoint: Endpoint, pagination?: Pagination) {
+    /** Individual endpoints response type */
+    type Resource = PokeEndpointMapper[Endpoint];
+
+    let paginationInfo: PokeApiPaginationInfo = {
       next: '',
       previous: '',
       count: 0,
-      results: [],
     };
+
     return this.getNamedResources(endpoint, pagination).pipe(
       mergeMap(
         (response) => {
           const results = response.results;
           response.results = [];
-          mappedResponse = response as PokeApiResponse<Resource>;
+          paginationInfo = response as PokeApiPaginationInfo;
 
           return of(...results.map(resource=>resource.url));
         }
@@ -52,7 +56,7 @@ export class PokeApiService {
       reduce((res, resource)=>{
         res.results.push(resource);
         return res;
-      }, mappedResponse),
+      }, Object.assign({results: []}, paginationInfo) as PokeApiResponse<Resource>),
     );
   }
 
@@ -78,8 +82,8 @@ export class PokeApiService {
    * @typedef <Resource> The resource of the response
    * @returns The observable for the request to that resource
    */
-  get<Resource>(endpoint: PokeApiEndpoint, id: number | string) {
-    return this.http.get<Resource>(
+  get<Endpoint extends PokeApiEndpoint>(endpoint: Endpoint, id: number | string) {
+    return this.http.get<PokeEndpointMapper[Endpoint]>(
       `${this.getUrlFor(endpoint)}/${id}`
     );
   }

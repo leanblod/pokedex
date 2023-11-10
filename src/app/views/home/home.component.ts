@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { PokeApiEndpoint, PokeApiResponse } from '@models/poke-api';
+import { PokeApiResponse } from '@models/poke-api';
+import { PokeApiEndpoint } from '@models/poke-api-endpoint';
 import { Pokemon } from '@models/poke-api-resources/pokemon';
 import { PokeApiService } from '@services/poke-api.service';
 import { Observable, map, mergeMap, timer } from 'rxjs';
@@ -29,7 +30,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.pokeApiResponse = timer(0, 5000).pipe(
-      mergeMap(()=>this.pokeApiService.getListOf<Pokemon>(PokeApiEndpoint.Pokemon)),
+      mergeMap(()=>this.pokeApiService.getListOf(PokeApiEndpoint.Pokemon)),
       map((response)=>response.results),
     );
   }

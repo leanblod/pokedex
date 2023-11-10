@@ -1,1 +1,37 @@
-/* You can add global styles to this file, and also import other style files */
+/* Imported files */
+
+/*#region Theme definitions */
+
+
+/*#endregion Theme definition */
+
+/*#region Styling structure */
+
+/* Button element's color themes */
+@mixin button-theming($primary, $secondary, $primary-hover, $secondary-hover) {
+  color: $primary;
+  background-color: $secondary;
+  outline-color: $primary;
+
+  &:hover {
+    color: $primary-hover;
+    background-color: $secondary-hover;
+    outline-color: $primary-hover;
+  }
+
+}
+
+button {
+  padding: .3em .6em;
+  outline-style: solid;
+  outline-width: .1em;
+
+  @include button-theming(#36c, white, white, #36c);
+
+}
+
+ul {
+  list-style: none;
+}
+
+/*#endregion Styling structure */

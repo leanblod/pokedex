@@ -8,7 +8,7 @@ import { Card } from '../card/card.component';
 })
 export class PokemonCardListComponent {
 
-  @Input({ required: true }) items!: Pokemon[];
+  @Input({ required: true }) items: Pokemon[] | null = null;
 
   map(item: Pokemon): Card {
     return {

@@ -1,5 +1,5 @@
-<div class="card">
+<div class="card" [title]="card.name | capitalize" (click)="prompt()">
   <img *ngIf="card.img !== null" class="img" src="{{ card.img || noImage }}" alt="{{ card.alt || card.name }}">
-  <h3 [title]="card.name" class="name">{{ card.name }}</h3>
+  <h3 class="name">{{ card.name | capitalize }}</h3>
   <p *ngIf="card.description" [title]="card.description" class="description">{{ card.description }}</p>
 </div>

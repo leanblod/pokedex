@@ -3,17 +3,29 @@
   padding: .5em .3em;
   border-radius: 1em;
   box-shadow: 1px -1px 2px 1px #333;
+  overflow: hidden;
+  width: 10em;
+
+  &:hover {
+    background-color: #eee;
+    cursor: pointer;
+  }
 
   .name {
     color: #444;
   }
   .description {
     color: #666;
+    white-space: pre;
   }
 
   .name,
   .description {
     overflow-x: hidden;
     text-overflow: ellipsis;
+  }
+
+  .img {
+    width: 100%
   }
 }

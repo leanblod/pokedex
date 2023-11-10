@@ -2,6 +2,14 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@components/*": ["./src/app/components/*"],
+      "@interceptors/*": ["./src/app/interceptors/*"],
+      "@models/*": ["./src/app/models/*"],
+      "@services/*": ["./src/app/services/*"],
+      "@views/*": ["./src/app/views/*"],
+      "@assets/*": ["./src/assets/*"]
+    },
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

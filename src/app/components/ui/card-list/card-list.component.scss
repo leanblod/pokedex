@@ -1,0 +1,14 @@
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  align-items: center;
+  justify-content: flex-start;
+
+  flex-grow: 50em;
+
+  li {
+    margin: .5em 1em;
+  }
+}

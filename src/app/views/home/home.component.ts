@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PokeApiResponse } from '@models/poke-api';
+import { PokeApiEndpoint, PokeApiResponse } from '@models/poke-api';
 import { Pokemon } from '@models/poke-api-resources/pokemon';
-import { Observable, map } from 'rxjs';
+import { PokeApiService } from '@services/poke-api.service';
+import { Observable, map, mergeMap, timer } from 'rxjs';
 
 @Component({
   selector: 'poke-home',
@@ -24,20 +24,13 @@ export class HomeComponent implements OnInit {
   };
 
   constructor(
-    private activatedRoute: ActivatedRoute,
+    private pokeApiService: PokeApiService,
   ) {}
 
   ngOnInit(): void {
-    this.pokeApiResponse = this.activatedRoute.data.pipe(
-      map(({ pokemon }) => {
-        const res = pokemon as PokeApiResponse<Pokemon>;
-        this.listData = Object.assign({}, res as ({
-          next: PokeApiResponse['next'],
-          previous: PokeApiResponse['previous'],
-          count: PokeApiResponse['count'],
-        }));
-        return res.results;
-      }),
+    this.pokeApiResponse = timer(0, 5000).pipe(
+      mergeMap(()=>this.pokeApiService.getListOf<Pokemon>(PokeApiEndpoint.Pokemon)),
+      map((response)=>response.results),
     );
   }
 

@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 /** Used for consistency between different environments and mocks */
 export interface IEnvironment {
   production: boolean;
+  refresh: boolean;
   /** Collection of APIs config */
   apis: {
     [apiName: string]: {
@@ -36,6 +37,10 @@ export class EnvService {
 
   get production() {
     return this._env.production;
+  }
+
+  get refresh() {
+    return this._env.refresh;
   }
 
   /** {@link https://pokeapi.co/api/v2 PokeAPI} base URL */

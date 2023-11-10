@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PokeApiResponse } from '@models/poke-api';
 import { PokeApiEndpoint } from '@models/poke-api-endpoint';
 import { Pokemon } from '@models/poke-api-resources/pokemon';
+import { EnvService } from '@services/env.service';
 import { PokeApiService } from '@services/poke-api.service';
-import { Observable, map, mergeMap, timer } from 'rxjs';
+import { Observable, iif, map, mergeMap, of, timer } from 'rxjs';
 
 @Component({
   selector: 'poke-home',
@@ -26,13 +27,13 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private pokeApiService: PokeApiService,
+    private env: EnvService,
   ) {}
 
   ngOnInit(): void {
-    this.pokeApiResponse = timer(0, 5000).pipe(
+    this.pokeApiResponse = iif(()=>this.env.refresh, timer(0, 5000), of(null)).pipe(
       mergeMap(()=>this.pokeApiService.getListOf(PokeApiEndpoint.Pokemon)),
       map((response)=>response.results),
     );
   }
-
 }

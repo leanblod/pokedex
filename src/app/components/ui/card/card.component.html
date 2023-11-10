@@ -1,0 +1,5 @@
+<div class="card">
+  <img *ngIf="card.img !== null" class="img" src="{{ card.img || noImage }}" alt="{{ card.alt || card.name }}">
+  <h3 [title]="card.name" class="name">{{ card.name }}</h3>
+  <p *ngIf="card.description" class="description">{{ card.description }}</p>
+</div>

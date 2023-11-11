@@ -8,6 +8,8 @@ import { EnvService } from '@services/env.service';
 })
 export class AppComponent {
 
+  static title = 'Pokedex';
+
   private response: unknown;
 
   constructor(

@@ -17,6 +17,8 @@ import { PokemonFormComponent } from './components/forms/pokemon-form/pokemon-fo
 import { PokemonDetailComponent } from './views/pokemon/pokemon-detail/pokemon-detail.component';
 import { NavMenuComponent } from './components/ui/nav-menu/nav-menu.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
+import { LoggerService } from '@services/logger.service';
+import { Logger } from '@models/logger';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
     httpInterceptorProviders,
     EnvService,
     PokeApiService,
+    LoggerService,
+    { provide: Logger, useClass: LoggerService }
   ],
   bootstrap: [AppComponent]
 })

@@ -13,6 +13,7 @@ import { EnvService } from '@services/env.service';
 import { PokeApiService } from '@services/poke-api.service';
 import { PokemonCardListComponent } from './components/ui/pokemon-card-list/pokemon-card-list.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
+import { NavMenuComponent } from './components/ui/nav-menu/nav-menu.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CapitalizePipe } from './pipes/capitalize.pipe';
     HomeComponent,
     PokemonCardListComponent,
     CapitalizePipe,
+    NavMenuComponent,
   ],
   imports: [
     BrowserModule,

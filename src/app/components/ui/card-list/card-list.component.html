@@ -1,5 +1,5 @@
 <ul class="card-list">
-  <li *ngFor="let item of items">
-    <poke-card [card]="map(item)" />
+  <li *ngFor="let card of cards">
+    <poke-card [card]="card" />
   </li>
 </ul>

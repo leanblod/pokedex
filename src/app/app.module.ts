@@ -11,7 +11,7 @@ import { CardListComponent } from '@components/ui/card-list/card-list.component'
 import { HomeComponent } from '@views/home/home.component';
 import { EnvService } from '@services/env.service';
 import { PokeApiService } from '@services/poke-api.service';
-import { PokemonCardListComponent } from './components/ui/pokemon-card-list/pokemon-card-list.component';
+import { PokemonCardListComponent } from './views/pokemon/pokemon-card-list/pokemon-card-list.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { NavMenuComponent } from './components/ui/nav-menu/nav-menu.component';
 

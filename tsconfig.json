@@ -4,7 +4,7 @@
   "compilerOptions": {
     "paths": {
       "@components/*": ["./src/app/components/*"],
-      "@interceptors/*": ["./src/app/interceptors/*"],
+      "@interceptors": ["./src/app/interceptors"],  // Doesn't use wildcard (only httpInterceptorProviders should be used)
       "@models/*": ["./src/app/models/*"],
       "@services/*": ["./src/app/services/*"],
       "@views/*": ["./src/app/views/*"],

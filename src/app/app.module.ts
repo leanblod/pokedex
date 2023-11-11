@@ -14,6 +14,7 @@ import { PokeApiService } from '@services/poke-api.service';
 import { PokemonCardListComponent } from './views/pokemon/pokemon-card-list/pokemon-card-list.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
 import { NavMenuComponent } from './components/ui/nav-menu/nav-menu.component';
+import { NotFoundComponent } from './views/not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { NavMenuComponent } from './components/ui/nav-menu/nav-menu.component';
     PokemonCardListComponent,
     CapitalizePipe,
     NavMenuComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,

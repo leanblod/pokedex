@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { EnvService } from './env.service';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Pagination, PokeApiPaginationInfo, PokeApiResponse, QueryStringParams } from '@models/poke-api';
-import { mergeMap, of, reduce } from 'rxjs';
+import { Subject, mergeMap, of, reduce, tap } from 'rxjs';
 import { PokeApiEndpoint, PokeEndpointMapper } from '@models/poke-api-endpoint';
+import { Logger } from '@models/logger';
 
 /**
  * General service for all endpoints that share the structure defined in
@@ -17,9 +18,13 @@ export class PokeApiService {
   /** Base PokeAPI URL */
   protected readonly BASE_URL: string = this.env.pokeUrl;
 
+  paginationInfo: Subject<PokeApiPaginationInfo> = new Subject<PokeApiPaginationInfo>();
+
   constructor(
     private http: HttpClient,
     private env: EnvService,
+    @Inject(Logger)
+    private logger: Logger,
   ) {  }
 
   protected getUrlFor(endpoint: PokeApiEndpoint) {
@@ -36,27 +41,25 @@ export class PokeApiService {
     /** Individual endpoints response type */
     type Resource = PokeEndpointMapper[Endpoint];
 
-    let paginationInfo: PokeApiPaginationInfo = {
-      next: '',
-      previous: '',
-      count: 0,
-    };
-
     return this.getNamedResources(endpoint, pagination).pipe(
       mergeMap(
         (response) => {
           const results = response.results;
           response.results = [];
-          paginationInfo = response as PokeApiPaginationInfo;
+          this.paginationInfo.next(response as PokeApiPaginationInfo);
 
           return of(...results.map(resource=>resource.url));
         }
       ),
       mergeMap((url) => this.http.get<Resource>(url)),
       reduce((res, resource)=>{
-        res.results.push(resource);
+        res.push(resource);
         return res;
-      }, Object.assign({results: []}, paginationInfo) as PokeApiResponse<Resource>),
+      }, [] as Resource[]),
+      tap({
+        next: () => this.logger.info.success(`${endpoint} endpoint`, 'List retrieved successfully'),
+        error: (err) => this.logger.info.failed(`${endpoint} endpoint`, "The list couldn't be fetched", err),
+      }),
     );
   }
 

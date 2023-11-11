@@ -3,6 +3,7 @@ import { Pokemon } from "./poke-api-resources/pokemon";
 
 /**
  * List of endpoints to map to the resource types
+ * @see {@link PokeEndpointMapper} (mapping to resource model)
  */
 export enum PokeApiEndpoint {
   Pokemon='pokemon',
@@ -10,7 +11,8 @@ export enum PokeApiEndpoint {
 }
 
 /**
- * @todo Use this type for mapping the endpoint to the resource model
+ * Use this type for mapping the endpoint to the resource model
+ * @see {@link PokeApiEndpoint} (endpoint titles)
  */
 export type PokeEndpointMapper = {
   [Endpoint in PokeApiEndpoint]: {

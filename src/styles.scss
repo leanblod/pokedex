@@ -7,6 +7,10 @@
 
 /*#region Styling structure */
 
+body {
+  margin: 0;
+}
+
 /* Button element's color themes */
 @mixin button-theming($primary, $secondary, $primary-hover, $secondary-hover) {
   color: $primary;
@@ -32,6 +36,8 @@ button {
 
 ul {
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 /*#endregion Styling structure */

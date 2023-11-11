@@ -13,6 +13,7 @@ import { EnvService } from '@services/env.service';
 import { PokeApiService } from '@services/poke-api.service';
 import { PokemonCardListComponent } from './views/pokemon/pokemon-card-list/pokemon-card-list.component';
 import { CapitalizePipe } from './pipes/capitalize.pipe';
+import { PokemonFormComponent } from './components/forms/pokemon-form/pokemon-form.component';
 import { PokemonDetailComponent } from './views/pokemon/pokemon-detail/pokemon-detail.component';
 import { NavMenuComponent } from './components/ui/nav-menu/nav-menu.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
@@ -25,6 +26,7 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
     HomeComponent,
     PokemonCardListComponent,
     CapitalizePipe,
+    PokemonFormComponent,
     PokemonDetailComponent,
     NavMenuComponent,
     NotFoundComponent,

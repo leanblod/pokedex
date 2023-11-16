@@ -41,11 +41,11 @@ export class LoggerService implements Logger {
           break;
 
         case OutputLevel.Info:
-          titleColor = 'dark-blue';
+          titleColor = 'blue';
           break;
 
         case OutputLevel.Failed:
-          titleColor = 'dark-red';
+          titleColor = 'red';
       }
       console[this.channel](`%c${title}`, this.titleStyle(titleColor), ...messages);
     }

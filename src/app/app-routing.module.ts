@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { ResolveFn, RouterModule, Routes } from '@angular/router';
 import { PokemonCardListComponent } from '@views/pokemon/pokemon-card-list/pokemon-card-list.component';
 import { PokeApiEndpoint } from '@models/poke-api-endpoint';
@@ -8,6 +8,8 @@ import { pokemonResolver } from '@views/pokemon/pokemon.resolver';
 import { NotFoundComponent } from '@views/not-found/not-found.component';
 import { AppComponent } from './app.component';
 import { ViewType } from '@models/view-type';
+
+@Component({template: '<h2>Te la creíste wey xD</h2>', standalone: true , styles: [ 'h2{color: transparent; background-image: linear-gradient(transparent, #F00, #FF0, #0F0, #00F, #F0F, transparent); background-clip: text; }' ]}) class TeLaCreisteWey {}
 
 const routes: Routes = [
   {
@@ -30,12 +32,18 @@ const routes: Routes = [
       },
       {
         path: ':id',
+        title: parentTitleAppend('Detail'),
         component: PokemonDetailComponent,
         resolve: {
           pokemon: pokemonResolver[ViewType.Detail],
         },
       },
     ],
+  },
+  {
+    path: PokeApiEndpoint.Berry,
+    title: 'Berries',
+    component: TeLaCreisteWey,
   },
   {
     path: '**',

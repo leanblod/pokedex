@@ -3,7 +3,7 @@ import { Pokemon } from '@models/poke-api-resources/pokemon';
 import { Card } from '../../../components/ui/card/card.component';
 import { PokeApiService } from '@services/poke-api.service';
 import { EnvService } from '@services/env.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, iif, map, mergeMap, of, timer } from 'rxjs';
 import { PokeApiEndpoint } from '@models/poke-api-endpoint';
 
@@ -19,6 +19,7 @@ export class PokemonCardListComponent implements OnInit {
     private pokeApiService: PokeApiService,
     private env: EnvService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -44,10 +45,15 @@ export class PokemonCardListComponent implements OnInit {
     `Height: ${item.height}`);
 
     return {
+      id: item.id,
       name: item.name,
       img: item.sprites.front_default,
       description,
     };
+  }
+
+  openDetail(card: Card) {
+    this.router.navigate([PokeApiEndpoint.Pokemon, card.id]);
   }
 
 }

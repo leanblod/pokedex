@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Card } from '../card/card.component';
 
 @Component({
@@ -13,5 +13,7 @@ export class CardListComponent {
     required: true,
     transform: (value: Card[]|null) => value??[],
   }) cards!: Card[];
+
+  @Output() select: EventEmitter<Card> = new EventEmitter<Card>();
 
 }

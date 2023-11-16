@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 export interface IEnvironment {
   production: boolean;
   refresh: boolean;
+  localCache: boolean;
   /** Collection of APIs config */
   apis: {
     [apiName: string]: {
@@ -26,26 +27,39 @@ export interface IEnvironment {
 export class EnvService {
 
   /** Imported environment file */
-  private readonly _env: IEnvironment = environment;
+  private static readonly _env: IEnvironment = environment;
 
   /**
-   * Get a shallow copy of the full environment
+   * Get a deep copy of the full environment from a static context
+   * @see {@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy Deep copy - MDN}
+   */
+  static get env() {
+    return JSON.parse(JSON.stringify(EnvService._env)) as IEnvironment;
+  }
+
+  /**
+   * Get a deep copy of the full environment
+   * @see {@link https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy Deep copy - MDN}
    */
   get copy() {
-    return Object.assign({}, this._env);
+    return JSON.parse(JSON.stringify(EnvService._env)) as IEnvironment;
   }
 
   get production() {
-    return this._env.production;
+    return this.copy.production;
   }
 
   get refresh() {
-    return this._env.refresh;
+    return this.copy.refresh;
+  }
+
+  get localCache() {
+    return this.copy.localCache;
   }
 
   /** {@link https://pokeapi.co/api/v2 PokeAPI} base URL */
   get pokeUrl() {
-    return this._env.apis['poke']?.baseUrl;
+    return this.copy.apis['poke']?.baseUrl;
   }
 
 }

@@ -1,0 +1,19 @@
+@keyframes spinner {
+  0% {rotate: 0}
+  25% {rotate: 90deg}
+  50% {rotate: 180deg}
+  75% {rotate: 270deg}
+  100% {rotate: 360deg}
+}
+
+.simple-spinner {
+  border: none;
+  border-radius: 50%;
+  border-bottom-width: .2em;
+  border-bottom-style: solid;
+  width: .8em;
+  height: .8em;
+  animation-name: spinner;
+  animation-duration: .5s;
+  animation-iteration-count: infinite;
+}

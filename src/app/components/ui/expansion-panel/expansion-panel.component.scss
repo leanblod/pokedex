@@ -1,0 +1,75 @@
+.expansion-panel-container {
+  padding: 0;
+  width: inherit;
+  max-width: inherit;
+
+  // Variables
+  $inner-padding: .2em .5em;
+  $transition-time: .2s;
+
+  .header-container {
+    position: relative;
+    padding: $inner-padding;
+    padding-right: $inner-padding+.2em;
+    background: linear-gradient(transparent, #EEF);
+    border-bottom: 2px solid #AAF;
+    width: 100%;
+    min-height: fit-content;
+
+    transition: background-color $transition-time;
+
+    .header {
+      display: inline-block;
+    }
+
+    .toggle {
+      position: absolute;
+      right: 0;
+      background: none;
+      outline: none;
+      border: none;
+      color: #444;
+      font-weight: bold;
+      font-size: 1.1em;
+      font-family: monospace;
+      transition: rotate $transition-time;
+    }
+
+    &:hover {
+      background-color: #EEF;
+      transition: none;
+    }
+  }
+
+  .content {
+    padding: $inner-padding;
+    margin: 0;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    max-height: 0;
+    visibility: hidden;
+    outline: none;
+    border: none;
+
+    transition: max-height $transition-time, visibility $transition-time;
+  }
+
+  &.expanded {
+    .header-container {
+      background-color: #DDF;
+      position: sticky;
+      top:0;
+
+      .toggle {
+        rotate: 90deg;
+      }
+    }
+
+    .content {
+      max-height: fit-content;
+      display: block;
+      visibility: visible;
+    }
+  }
+}

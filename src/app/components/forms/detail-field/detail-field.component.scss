@@ -1,0 +1,45 @@
+.field {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+
+  .controls {
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    .input {
+      flex-grow: 1;
+    }
+    button {
+      flex-grow: .1;
+
+      background-color: transparent;
+      outline-color: transparent;
+      border: none;
+      border-radius: 50%;
+      padding: .2em;
+
+      color: red;
+      font-weight: bold;
+    }
+  }
+
+  .messages {
+    font-size: .6em;
+    opacity: .8;
+    margin: 0 .5em;
+
+    min-height: 1em;
+
+    .pending {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+}

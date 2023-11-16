@@ -19,6 +19,7 @@ import { NavMenuComponent } from './components/ui/nav-menu/nav-menu.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
 import { LoggerService } from '@services/logger.service';
 import { Logger } from '@models/logger';
+import { DetailFieldComponent } from './components/forms/detail-field/detail-field.component';
 import { ErrorComponent } from './components/forms/error/error.component';
 import { HintComponent } from './components/forms/hint/hint.component';
 import { SpinnerComponent } from './components/ui/spinner/spinner.component';
@@ -36,6 +37,7 @@ import { AsyncValidationMessageComponent } from './components/forms/async-valida
     PokemonDetailComponent,
     NavMenuComponent,
     NotFoundComponent,
+    DetailFieldComponent,
     ErrorComponent,
     HintComponent,
     SpinnerComponent,

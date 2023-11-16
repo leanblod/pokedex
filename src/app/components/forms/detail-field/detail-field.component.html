@@ -1,0 +1,27 @@
+<div class="field" [title]="label">
+  <label [for]="control?.name" *ngIf="label">{{ label }}</label>
+  <div class="controls">
+    <div class="input">
+      <ng-content select="[formControlName]" />
+      <div class="messages" [ngSwitch]="control?.status">
+        <ng-container *ngIf="control?.touched">
+            <ng-template ngSwitchCase="VALID">
+              <ng-content select="poke-hint" />
+            </ng-template>
+            <ng-template ngSwitchCase="INVALID">
+              <ng-content select="poke-error" />
+            </ng-template>
+            <ng-template ngSwitchCase="PENDING">
+              <div class="pending">
+                <div><ng-content select="poke-async-validation-message" /></div>
+                <poke-spinner />
+              </div>
+            </ng-template>
+        </ng-container>
+      </div>
+    </div>
+    <button type="button"
+      [ngStyle]="{visibility: this.control?.dirty ? 'visible' : 'hidden'}"
+      (click)="resetControl()">x</button>
+  </div>
+</div>

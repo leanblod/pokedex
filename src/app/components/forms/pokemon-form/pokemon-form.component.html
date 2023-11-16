@@ -1,1 +1,105 @@
-<p>pokemon-form works!</p>
+
+<main>
+  <header class='title'>
+    <img [src]="this.pokemon?.sprites?.front_default" />
+    <h2>{{pokemon?.name | capitalize: 'word' }} ({{pokemon?.id}})</h2>
+  </header>
+
+  <form [formGroup]="pokemonForm" (ngSubmit)="send(pokemonForm.getRawValue())">
+
+    <poke-detail-field label="Name">
+      <input detailField [editAllOnClick]="true" [allowEdition]="editInput" formControlName="name">
+      <poke-async-validation-message>
+        Validating name availability
+      </poke-async-validation-message>
+      <poke-error *ngIf="getControlErrors('name')['match']">
+        Name not available, matches Pokemon with id {{ getControlErrors('name')['match'] }}
+      </poke-error>
+      <poke-error *ngIf="getControlErrors('name')['required']">
+        The name is required
+      </poke-error>
+    </poke-detail-field>
+
+    <poke-detail-field label="Base experience">
+      <input detailField [allowEdition]="editInput" formControlName="base_experience">
+    </poke-detail-field>
+
+    <poke-detail-field label="Height">
+      <input detailField [allowEdition]="editInput" formControlName="height">
+    </poke-detail-field>
+
+    <poke-detail-field label="Order">
+      <input detailField [allowEdition]="editInput" formControlName="order">
+    </poke-detail-field>
+
+    <poke-detail-field label="Weight">
+      <input detailField [allowEdition]="editInput" formControlName="weight">
+    </poke-detail-field>
+
+    <poke-detail-field label="Species">
+      <input detailField [allowEdition]="editInput" formControlName="species">
+    </poke-detail-field>
+
+    <poke-detail-field label="Location area of encounters">
+      <input detailField [allowEdition]="editInput" formControlName="location_area_encounters">
+    </poke-detail-field>
+
+    <poke-expansion-panel *ngIf="getFormArray('abilities').controls.length">
+      <header>Abilities</header>
+      <div class="list">
+        <ng-container *ngFor="let abiliy of getFormArray('abilities').controls">
+          <input detailField [allowEdition]="editInput" [formControl]="abiliy">
+        </ng-container>
+      </div>
+    </poke-expansion-panel>
+
+    <poke-expansion-panel *ngIf="getFormArray('forms').controls.length">
+      <header>Forms</header>
+      <div class="list">
+        <ng-container *ngFor="let form of getFormArray('forms').controls">
+          <input detailField [allowEdition]="editInput" [formControl]="form">
+        </ng-container>
+      </div>
+    </poke-expansion-panel>
+
+    <poke-expansion-panel *ngIf="getFormArray('held_items').controls.length">
+      <header>Held items</header>
+      <div class="list">
+        <ng-container *ngFor="let held_item of getFormArray('held_items').controls">
+          <input detailField [allowEdition]="editInput" [formControl]="held_item">
+        </ng-container>
+      </div>
+    </poke-expansion-panel>
+
+    <poke-expansion-panel *ngIf="getFormArray('moves').controls.length">
+      <header>Moves</header>
+      <div class="list">
+        <ng-container *ngFor="let move of getFormArray('moves').controls">
+          <input detailField [allowEdition]="editInput" [formControl]="move">
+        </ng-container>
+      </div>
+    </poke-expansion-panel>
+
+    <poke-expansion-panel *ngIf="getFormArray('types').controls.length">
+      <header>Types</header>
+      <div class="list">
+        <ng-container *ngFor="let move of getFormArray('types').controls">
+          <input detailField [allowEdition]="editInput" [formControl]="move">
+        </ng-container>
+      </div>
+    </poke-expansion-panel>
+
+    <!-- Actions -->
+    <div class="actions" *ngIf="pokemonForm.touched">
+      <button type="submit"
+        class="save"
+        [disabled]="pokemonForm.invalid">
+        <span>Save changes</span>
+      </button>
+      <button type="button" class="reset" (click)="resetForm()">
+        <span>Cancel</span>
+      </button>
+    </div>
+  </form>
+</main>
+

@@ -91,4 +91,11 @@ export class PokeApiService {
     );
   }
 
+  put<Endpoint extends PokeApiEndpoint>(endpoint: Endpoint, data: PokeEndpointMapper[Endpoint]) {
+    alert("Now I'd send the data with the appropriate structure in a PUT request...\nIf the API supported it -_-'");
+    return of(()=> {
+      this.logger.info.success(`PUT to ${endpoint}`, `Resource edited correctly`, data);
+    });
+  }
+
 }

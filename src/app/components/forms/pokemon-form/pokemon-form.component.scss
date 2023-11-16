@@ -1,0 +1,29 @@
+main {
+  padding: 2em;
+  form {
+    width: 28em;
+    max-width: 100%;
+    box-sizing: content-box;
+
+    display: flex;
+    flex-direction: column;
+
+    .list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+
+      justify-content: space-evenly;
+
+      margin-top: 2em;
+
+    }
+  }
+}

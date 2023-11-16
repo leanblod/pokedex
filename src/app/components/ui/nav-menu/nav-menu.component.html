@@ -1,0 +1,11 @@
+<nav class="menu">
+  <ul class="list">
+    <li *ngFor="let link of links">
+      <a [routerLink]="link.routerLink"
+        routerLinkActive="activeLink"
+        ariaCurrentWhenActive="page">
+        {{ link.title | capitalize }}
+      </a>
+    </li>
+  </ul>
+</nav>

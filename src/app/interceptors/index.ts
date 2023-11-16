@@ -10,6 +10,3 @@ export const httpInterceptorProviders: Provider[] = [
   { provide: HTTP_INTERCEPTORS, useClass: CacheInterceptor, multi: true },
   { provide: HTTP_INTERCEPTORS, useClass: LoggerInterceptor, multi: true },
 ];
-
-// Interceptors' barrel
-export { CacheInterceptor , LoggerInterceptor };

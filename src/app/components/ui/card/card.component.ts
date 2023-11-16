@@ -23,4 +23,9 @@ export class CardComponent {
   @Input({ required: true }) card!: Card;
 
   readonly noImage = '/assets/no_image_available.png';
+
+  prompt() {
+    alert(`Acá te mandaría al componente de detalle donde liste la info y las
+    cards de las evoluciones/involuciones, si tuviera uno xD`);
+  }
 }

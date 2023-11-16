@@ -20,6 +20,7 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
 import { LoggerService } from '@services/logger.service';
 import { Logger } from '@models/logger';
 import { ErrorComponent } from './components/forms/error/error.component';
+import { HintComponent } from './components/forms/hint/hint.component';
 import { SpinnerComponent } from './components/ui/spinner/spinner.component';
 import { AsyncValidationMessageComponent } from './components/forms/async-validation-message/async-validation-message.component';
 
@@ -36,6 +37,7 @@ import { AsyncValidationMessageComponent } from './components/forms/async-valida
     NavMenuComponent,
     NotFoundComponent,
     ErrorComponent,
+    HintComponent,
     SpinnerComponent,
     AsyncValidationMessageComponent,
   ],

@@ -1,5 +1,5 @@
 <ul class="card-list">
   <li *ngFor="let card of cards">
-    <poke-card [card]="card" />
+    <poke-card [card]="card" (click)="select.emit(card)" />
   </li>
 </ul>

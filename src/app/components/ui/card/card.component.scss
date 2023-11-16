@@ -1,10 +1,13 @@
 .card {
+  $card-border-raduis: .5em;
+
   height: 100%;
   padding: .5em .3em;
-  border-radius: 1em;
+  border-radius: $card-border-raduis;
   box-shadow: 1px -1px 2px 1px #333;
   overflow: hidden;
   width: 10em;
+  position: relative;
 
   &:hover {
     background-color: #eee;
@@ -27,5 +30,16 @@
 
   .img {
     width: 100%
+  }
+
+  .id {
+    color: #888;
+    position: absolute;
+    bottom: calc($card-border-raduis/4);
+    right: calc($card-border-raduis/2);
+
+    &.number::before {
+      content: '#';
+    }
   }
 }

@@ -29,8 +29,14 @@ button {
   padding: .3em .6em;
   outline-style: solid;
   outline-width: .1em;
+  border-radius: .2em;
 
   @include button-theming(#36c, white, white, #36c);
+
+  &:disabled {
+    @include button-theming(#444, #BBB, #444, #BBB);
+    cursor: default;
+  }
 
 }
 

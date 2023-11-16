@@ -41,3 +41,40 @@ ul {
 }
 
 /*#endregion Styling structure */
+
+// Styling for directives
+input[detailField] {
+  outline: none;
+  border: none;
+  border-bottom: 2px solid #888;
+  color: inherit;
+  font-size: inherit;
+  background-color: rgba(255,255,255,0.4);
+  transition: background-color .2s;
+  border-radius: .2em;
+
+  padding: .1em .5em;
+
+  &:active,
+  &:focus {
+    border-bottom-color: #222;
+  }
+
+  &.pending {
+    border-bottom-color: blue;
+  }
+
+  &.invalid {
+    border-bottom-color: red;
+  }
+
+  &:read-only { // As detail, not imput
+    cursor: pointer;
+    border-color: transparent;
+    background-color: transparent;
+
+    &:hover {
+      background-color: rgba(127,127,127,0.4);
+    }
+  }
+}

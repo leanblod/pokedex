@@ -19,6 +19,7 @@ import { NavMenuComponent } from './components/ui/nav-menu/nav-menu.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
 import { LoggerService } from '@services/logger.service';
 import { Logger } from '@models/logger';
+import { SpinnerComponent } from './components/ui/spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { Logger } from '@models/logger';
     PokemonDetailComponent,
     NavMenuComponent,
     NotFoundComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,

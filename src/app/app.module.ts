@@ -20,6 +20,7 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
 import { LoggerService } from '@services/logger.service';
 import { Logger } from '@models/logger';
 import { SpinnerComponent } from './components/ui/spinner/spinner.component';
+import { AsyncValidationMessageComponent } from './components/forms/async-validation-message/async-validation-message.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { SpinnerComponent } from './components/ui/spinner/spinner.component';
     NavMenuComponent,
     NotFoundComponent,
     SpinnerComponent,
+    AsyncValidationMessageComponent,
   ],
   imports: [
     BrowserModule,

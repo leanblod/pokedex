@@ -1,0 +1,26 @@
+.search-field-container{
+  position: relative;
+
+  ul {
+    position: absolute;
+    top: 110%;
+    padding: .2em .4em;
+
+    background-color: rgba($color: #ffdecc, $alpha: .6);
+    border-radius: .3em;
+
+    li {
+      user-select: none;
+      cursor: pointer;
+      padding: .1em;
+
+      &:hover {
+        background-color: rgba(#ccf, $alpha: .8);
+      }
+    }
+  }
+}
+
+.ng-touched {
+  background-color: red;
+}

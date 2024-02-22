@@ -1,6 +1,6 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { AfterViewInit, Component, EventEmitter, Inject, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { Logger } from '@models/logger';
 import { PokeApiEndpoint } from '@models/poke-api-endpoint';
 import { Pokemon } from '@models/poke-api-resources/pokemon';
@@ -14,23 +14,26 @@ import { Subject, catchError, iif, map, mergeMap, of, tap, timer } from 'rxjs';
 @Component({
   selector: 'pokemon-form',
   templateUrl: './pokemon-form.component.html',
-  styleUrls: ['./pokemon-form.component.scss']
+  styleUrls: ['./pokemon-form.component.scss'],
 })
 export class PokemonFormComponent implements AfterViewInit, OnChanges {
 
   /**
    * If absent, the form would be a creation form
    */
-  @Input() pokemon?: Pokemon | null;
-  @Output() submit: EventEmitter<Pokemon> = new EventEmitter<Pokemon>();
+  @Input() pokemon: Pokemon | null = null;
 
-  pokemonForm: FormGroup = this.newForm(this.pokemon);
+  @Output()
+  private submitPokemon: EventEmitter<Pokemon> = new EventEmitter<Pokemon>();
+
+  form = this.newForm();
+
   editInput: Subject<boolean> = new Subject<boolean>();
 
   constructor(
     private pokeApiService: PokeApiService,
     @Inject(Logger) private logger: Logger,
-    private fb: FormBuilder,  // Maybe will implement the fb.nonNullable.group(...) constructor
+    private fb: NonNullableFormBuilder,
   ) {}
 
   ngAfterViewInit(): void {
@@ -39,7 +42,7 @@ export class PokemonFormComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['pokemon']) {
-      this.pokemonForm = this.newForm(this.pokemon);
+      this.form = this.newForm(this.pokemon);
     }
   }
 
@@ -47,186 +50,77 @@ export class PokemonFormComponent implements AfterViewInit, OnChanges {
    * Form creation based on Input update
    * @param pokemon Pokemon to modify or null | undefined to create
    */
-  private newForm(pokemon?: Pokemon | null) {
-    return new FormGroup({
+  private newForm(pokemon: Pokemon | null = null) {
+    return this.fb.group({
+      name: [
+        pokemon?.name??'',
+        [Validators.required],
+        [this.pokemonNameAvailability(pokemon)],
+      ],
 
-      //#region This values shoudn't change, maybe I'll use the pokemon's id value anyways
-      id: new FormControl(
-        {
-          value: pokemon?.id??null,
-          disabled: true,
-        },
-        {
-          nonNullable: true,
-        }
-      ),
+      base_experience: [
+        pokemon?.base_experience??0,
+        [Validators.min(0)],
+      ],
 
-      sprites: new FormControl(
-        {
-          value: pokemon?.sprites??null,
-          disabled: true,
-        },
-        {
-          nonNullable: true,
-        }
-      ),
-      //#endregion
+      height: [
+        pokemon?.height??0,
+      ],
 
-      name: new FormControl(
-        pokemon?.name??null,
-        {
-          nonNullable: true,
-          validators: [ Validators.required ],
-          asyncValidators: [ this.pokemonNameAvailability(pokemon) ]
-        }),
+      order: [
+        pokemon?.order??0,
+      ],
 
-      base_experience: new FormControl(
-        pokemon?.base_experience??null,
-        {
-          nonNullable: true,
-        }),
+      weight: [
+        pokemon?.weight??0,
+      ],
 
-      height: new FormControl(
-        pokemon?.height??null,
-        {
-          nonNullable: true,
-        }),
+      species: this.fb.group({
+        name: [
+          pokemon?.species.name??'',
+        ],
+        url: [
+          pokemon?.species.url??'',
+        ],
+      }),
 
-      is_default: new FormControl(
-        pokemon?.is_default??null,
-        {
-          nonNullable: true,
-        }),
+      abilities: this.fb.array(pokemon?.abilities.map(
+        ability => [ability],
+      )??[]),
 
-      order: new FormControl(
-        pokemon?.order??null,
-        {
-          nonNullable: true,
-        }),
+      location_area_encounters: [
+        pokemon?.location_area_encounters??'',
+      ],
 
-      weight: new FormControl(
-        pokemon?.weight??null,
-        {
-          nonNullable: true,
-        }),
+      forms: this.fb.array(pokemon?.forms.map(
+        form => [form],
+      )??[]),
 
-      abilities: new FormArray(pokemon?.abilities.map(
-        ability => new FormControl(
-          ability.ability.name,
-          {
-            nonNullable: true,
-          }
+      held_items: this.fb.array(pokemon?.held_items.map(
+        held_item => [held_item],
+      )??[]),
+
+      moves: this.fb.array(pokemon?.moves.map(
+        move => [move],
+      )??[]),
+
+      types: this.fb.array(pokemon?.types
+        .sort(this.bySlot)
+        .map(
+          type => [type],
         )
-      )??[]),
-
-      forms: new FormArray(pokemon?.forms.map(
-        form => new FormControl(
-          form.name,
-          {
-            nonNullable: true
-          }
-        )
-      )??[]),
-
-      game_indices: new FormArray(pokemon?.game_indices.map(
-        index => new FormGroup({
-          game_index: new FormControl(index.game_index),
-          version: new FormControl(index.version.name),
-        })
-      )??[]),
-
-      held_items: new FormArray(pokemon?.held_items.map(
-        held_item => new FormControl(
-          held_item.item.name,
-          {
-            nonNullable: true,
-          }
-        )
-      )??[]),
-
-      location_area_encounters: new FormControl(
-        pokemon?.location_area_encounters??null,
-        {
-          nonNullable: true,
-        }),
-
-      moves: new FormArray(pokemon?.moves.map(
-        move => new FormControl(move.move.name)
-      )??[]),
-
-      past_types: new FormArray(pokemon?.past_types.map(
-        past_type => new FormGroup({
-          generation: new FormControl(
-            past_type.generation.name,
-            {
-              nonNullable: true
-            },
-          ),
-
-          types: new FormArray(past_type.types
-            .sort((type1, type2) => type1.slot - type2.slot)
-            .map(
-              type => new FormControl(
-                type.type,
-                {
-                  nonNullable: true
-                }
-              )
-          )),
-        })
-      )??[]),
-
-      species: new FormControl(
-        pokemon?.species.name,
-        {
-          nonNullable: true,
-        }
-      ),
-      stats: new FormArray(pokemon?.stats.map(
-        stat => new FormGroup({
-          stat: new FormControl(
-            stat.stat.name,
-            {
-              nonNullable: true,
-            }
-          ),
-
-          base_stat: new FormControl(
-            stat.base_stat,
-            {
-              nonNullable: true,
-            }
-          ),
-
-          effort: new FormControl(
-            stat.effort,
-            {
-              nonNullable: true,
-            }
-          ),
-
-        })
-      )??[]),
-
-      types: new FormArray(pokemon?.types.map(
-        type => new FormControl(
-          type.type.name,
-          {
-            nonNullable: true,
-          }
-        )
-      )??[]),
+      ??[]),
 
     });
   }
 
   resetForm() {
-    this.pokemonForm.reset();
-    this.pokemonForm.markAsUntouched();
+    this.form.reset();
+    this.form.markAsUntouched();
     this.editInput.next(false);
   }
 
-  private pokemonNameAvailability(pokemon?: Pokemon | null): AsyncValidatorFn {
+  private pokemonNameAvailability(pokemon: Pokemon | null): AsyncValidatorFn {
     const pokeApiService = this.pokeApiService;
     const logger = this.logger;
     const oldName = pokemon?.name.toLowerCase();
@@ -239,7 +133,7 @@ export class PokemonFormComponent implements AfterViewInit, OnChanges {
           mergeMap(() => pokeApiService.get(PokeApiEndpoint.Pokemon, newName??'')),
           map((value) => value.name !== newName ?  // Checks if the match was by id
           null :
-          { match: value.id }
+          { match: value.id },
           ),
           catchError((error: HttpErrorResponse) => {
             if(error.status === HttpStatusCode.NotFound) {
@@ -254,31 +148,44 @@ export class PokemonFormComponent implements AfterViewInit, OnChanges {
     };
   }
 
+  private bySlot<T extends { slot: number }>(item1: T, item2: T) {
+    return item1.slot - item2.slot;
+  }
+
   getControlErrors(control: string) {
-    return this.pokemonForm.get(control)?.errors??{};
+    return this.form.get(control)?.errors??{};
   }
 
   getFormArray(control: string) {
-    return this.pokemonForm.get(control) as FormArray<FormControl>;
+    return this.form.get(control) as FormArray<FormControl>;
   }
 
   getFormArrayAsGroup(control: string) {
-    return this.pokemonForm.get(control) as FormArray<FormGroup>;
+    return this.form.get(control) as FormArray<FormGroup>;
   }
 
-  send(data: Pokemon) {
-    this.pokemonForm.markAllAsTouched();
-    if(this.pokemonForm.valid) {
-      const pokemon: Pokemon = Object.assign(this.pokemon??{}, data);
-      this.submit.emit(pokemon);
-      this.editInput.next(false);
-      this.pokemonForm.markAsUntouched();
-    } else if(this.pokemonForm.pending) {
-      alert('The form is beeing validated, try again in a jiffy');
-    } else if(this.pokemonForm.invalid) {
-      alert('The form is invalid');
-    } else if(this.pokemonForm.disabled) {
-      alert('The form is disabled');
+  send(data: Partial<Pokemon>) {
+    switch(this.form.status) {
+      case 'VALID':
+        let pokemon = Object.assign({}, this.pokemon, data);
+        console.log(pokemon);
+        this.submitPokemon.emit(pokemon);
+        this.editInput.next(false);
+        this.form.markAsUntouched();
+        this.form.markAsPristine();
+        break;
+
+      case 'PENDING':
+        alert('The form is beeing validated, try again in a jiffy');
+        break;
+
+      case 'INVALID':
+        alert('The form is invalid');
+        break;
+
+      case 'DISABLED':
+        alert('The form is disabled');
+        break;
     }
   }
 

@@ -1,0 +1,17 @@
+<div class="search-field-container">
+  <div class="display">
+    <input #input (focus)="touch()" type="text" *ngIf="!value; else link">
+    <ng-template #link>
+      <p>{{ value }}</p>
+      <button (click)="save(null)">X</button>
+    </ng-template>
+  </div>
+  <ul *ngIf="!value">
+    <li *ngFor="let option of options" (click)="save(option)">
+      <ng-container [ngTemplateOutlet]="(optionTemplate??defaultTemplate)" [ngTemplateOutletContext]="{data:option}" />
+      <ng-template #defaultTemplate let-data="option">
+        <div>{{ parseLabel(data) }}</div>
+      </ng-template>
+    </li>
+  </ul>
+</div>

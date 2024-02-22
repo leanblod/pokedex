@@ -1,1 +1,13 @@
 This component's sole purpose is to avoid requesting the PokeAPI with each server reload.
+
+<poke-search-field [options]="[1,2,3,4,5,6]" [formControl]="control" [optionTemplate]="option" />
+<ng-template #option let-number="data">
+  <div>
+    Númeroooo: {{ number }}
+  </div>
+</ng-template>
+
+<!-- <input [formControl]="control"> -->
+
+<p>Valor del control: {{ control.valueChanges | async }}</p>
+<button type="button" (click)="control.setValue(3)">Set 3</button>

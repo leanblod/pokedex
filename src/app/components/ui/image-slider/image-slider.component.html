@@ -1,0 +1,14 @@
+<div class="slider" [ngStyle]="{width,height}">
+  <button type="button" class="control side left" (click)="previous()">&lt;</button>
+  <div class="images">
+    <img *ngFor="let image of images; index as index"
+      [ngClass]="{selected: index === selected}"
+      [src]="image.url"
+      [title]="image.title??image.alt??''"
+      [alt]="image.alt??image.title??''">
+  </div>
+  <button type="button" class="control side rigth" (click)="next()">&gt;</button>
+  <div class="control bottom">
+
+  </div>
+</div>

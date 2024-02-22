@@ -46,10 +46,23 @@ ul {
   padding: 0;
 }
 
+.card-list {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+  align-items: center;
+  justify-content: flex-start;
+
+  li {
+    margin: .5em 1em;
+  }
+}
+
 /*#endregion Styling structure */
 
 // Styling for directives
-input[detailField] {
+[detailField] {
   outline: none;
   border: none;
   border-bottom: 2px solid #888;
@@ -66,15 +79,15 @@ input[detailField] {
     border-bottom-color: #222;
   }
 
-  &.pending {
+  &.ng-pending {
     border-bottom-color: blue;
   }
 
-  &.invalid {
+  &.ng-invalid {
     border-bottom-color: red;
   }
 
-  &:read-only { // As detail, not imput
+  &.ng-untouched {
     cursor: pointer;
     border-color: transparent;
     background-color: transparent;

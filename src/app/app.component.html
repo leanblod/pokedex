@@ -1,3 +1,4 @@
 <h1>Production: {{production? 'Yes' : 'No'}}</h1>
+<button style="position: absolute; top:.5em; right:.5em" (click)="resetChanges()">Clear local storage</button>
 <poke-nav-menu [links]="pokeApiEndpoints" />
 <router-outlet />

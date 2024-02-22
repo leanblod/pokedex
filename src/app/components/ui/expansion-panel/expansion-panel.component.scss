@@ -8,6 +8,7 @@
   $transition-time: .2s;
 
   .header-container {
+    cursor:pointer;
     position: relative;
     padding: $inner-padding;
     padding-right: $inner-padding+.2em;
@@ -23,6 +24,7 @@
     }
 
     .toggle {
+      cursor: inherit;
       position: absolute;
       right: 0;
       background: none;

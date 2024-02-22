@@ -7,6 +7,6 @@ export const environment: IEnvironment = {
   apis: {
     poke: {
       baseUrl: 'https://pokeapi.co/api/v2',
-    }
-  }
+    },
+  },
 };

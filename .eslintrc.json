@@ -4,8 +4,7 @@
     "es2021": true
   },
   "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended"
+    "eslint:recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -13,37 +12,16 @@
     "sourceType": "module"
   },
   "plugins": [
-    "@typescript-eslint"
+    "@typescript-eslint",
+    "@stylistic"
   ],
   "rules": {
-    /*"arrow-parens": [
-      "warn",
-      "as-needed"
-    ],
-    "arrow-spacing": "warn",
-    "block-spacing": "warn",
-    "brace-style": "warn",
-    "capitalized-comments": [
-      "error",
-      "never",
-      {
-        "ignoreConsecutiveComments": true
-      }
-    ],
-    "camelcase": [
-      "error",
-      "allways",
-      {
-        "ignoreImports": true
-      }
-    ],
-    "spaced-comment": "warn",
-    "semi": [
-      "warn"
-    ],*/
+    "no-case-declarations": "off",
     "eol-last": "warn",
     "no-unused-vars": "off",
     "no-trailing-spaces": "warn",
+    "no-unused-expressions": "warn",
+    "@stylistic/comma-dangle": ["warn", "always-multiline"],
     "semi": "warn",
     "yoda": "warn"
   }

@@ -16,5 +16,5 @@ export const pokemonResolver: { [resolver: string]: ResolveFn<unknown> } = {
     return id ?
       inject(PokeApiService).get(PokeApiEndpoint.Pokemon, id) :
       throwError(() => new Error("Invalid path param 'id'"));
-  }
+  },
 };

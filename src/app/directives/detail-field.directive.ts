@@ -1,5 +1,5 @@
-import { Directive, ElementRef, HostListener, Input, OnDestroy, OnInit, Optional } from '@angular/core';
-import { FormControlStatus, NgControl } from '@angular/forms';
+import { Directive, ElementRef, HostListener, Input, OnDestroy, OnInit, Optional, booleanAttribute } from '@angular/core';
+import { NgControl } from '@angular/forms';
 import { Subject, Subscription } from 'rxjs';
 
 @Directive({
@@ -7,8 +7,8 @@ import { Subject, Subscription } from 'rxjs';
 })
 export class DetailFieldDirective implements OnInit, OnDestroy {
 
-  @Input() allowEdition: Subject<boolean> = new Subject<boolean>();
-  @Input() editAllOnClick: boolean = true;
+  @Input({ transform: (value: unknown) => value??new Subject<boolean> }) allowEdition?: Subject<boolean>;
+  @Input({transform: booleanAttribute}) editAllOnClick: boolean = false;
   private makeEditableSubscription?: Subscription;
 
   constructor(
@@ -17,8 +17,7 @@ export class DetailFieldDirective implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.control?.control?.statusChanges.subscribe(this.setStatus.bind(this));
-    this.makeEditableSubscription = this.allowEdition.subscribe(this.setAllowEdition.bind(this));
+    this.makeEditableSubscription = this.allowEdition?.subscribe(this.setAllowEdition.bind(this));
   }
 
   ngOnDestroy(): void {
@@ -28,7 +27,7 @@ export class DetailFieldDirective implements OnInit, OnDestroy {
   @HostListener('click')
   onClick() {
     if(this.editAllOnClick) {
-      this.allowEdition.next(true);
+      this.allowEdition?.next(true);
     } else {
       this.setAllowEdition(true);
     }
@@ -40,25 +39,6 @@ export class DetailFieldDirective implements OnInit, OnDestroy {
       this.control?.control?.markAsTouched();
     } else {
       this.el.nativeElement.setAttribute('readonly','true');
-    }
-  }
-
-  private setStatus(status: FormControlStatus) {
-    const classList = this.el.nativeElement.classList;
-    switch(status) {
-      case 'VALID':
-        classList.remove('invalid');
-        classList.remove('pending');
-        break;
-
-      case 'INVALID':
-        classList.add('invalid');
-        classList.remove('pending');
-        break;
-
-      case 'PENDING':
-        classList.remove('invalid');
-        classList.add('pending');
     }
   }
 

@@ -26,6 +26,9 @@ import { ErrorComponent } from './components/forms/error/error.component';
 import { HintComponent } from './components/forms/hint/hint.component';
 import { SpinnerComponent } from './components/ui/spinner/spinner.component';
 import { AsyncValidationMessageComponent } from './components/forms/async-validation-message/async-validation-message.component';
+import { LocalPersistenceService } from '@services/local-persistence.service';
+import { ImageSliderComponent } from './components/ui/image-slider/image-slider.component';
+import { SearchFieldComponent } from './components/forms/search-field/search-field.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,8 @@ import { AsyncValidationMessageComponent } from './components/forms/async-valida
     HintComponent,
     SpinnerComponent,
     AsyncValidationMessageComponent,
+    ImageSliderComponent,
+    SearchFieldComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,8 +63,9 @@ import { AsyncValidationMessageComponent } from './components/forms/async-valida
     EnvService,
     PokeApiService,
     LoggerService,
-    { provide: Logger, useClass: LoggerService }
+    LocalPersistenceService,
+    { provide: Logger, useClass: LoggerService },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

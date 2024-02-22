@@ -15,4 +15,7 @@ export interface PokemonFormSprites {
   front_shiny: string | null;
   /** The shiny female depiction of this Pokémon from the back in battle. */
   front_shiny_female: string | null;
+
+  other?: unknown;
+  versions?: unknown;
 }

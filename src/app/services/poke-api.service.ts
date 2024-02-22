@@ -5,6 +5,13 @@ import { Pagination, PokeApiPaginationInfo, PokeApiResponse, QueryStringParams }
 import { Subject, mergeMap, of, reduce, tap } from 'rxjs';
 import { PokeApiEndpoint, PokeEndpointMapper } from '@models/poke-api-endpoint';
 import { Logger } from '@models/logger';
+import { LocalPersistenceService } from './local-persistence.service';
+
+type PersistedEndpoints = {
+  [Endpoint in PokeApiEndpoint]?: {
+    [key: number | string]: PokeEndpointMapper[Endpoint];
+  }
+}
 
 /**
  * General service for all endpoints that share the structure defined in
@@ -18,6 +25,35 @@ export class PokeApiService {
   /** Base PokeAPI URL */
   protected readonly BASE_URL: string = this.env.pokeUrl;
 
+  private readonly STORAGE_KEY: string = 'PokeApiResource';
+
+  private getLocalResource<Endpoint extends PokeApiEndpoint>(endpoint: Endpoint, id: string|number) {
+    const persistedEndpoints = this.localPersistenceService
+      .readItem<PersistedEndpoints>(this.STORAGE_KEY);
+    const resources = persistedEndpoints ?
+    persistedEndpoints[endpoint] :
+    null;
+    return resources ?
+      resources[id]??null :
+      null;
+  }
+
+  private setLocalResource<Endpoint extends PokeApiEndpoint>(endpoint: Endpoint, resource: PokeEndpointMapper[Endpoint]) {
+    const persistedEndpoints = this.localPersistenceService
+      .readItem<PersistedEndpoints>(this.STORAGE_KEY);
+
+    if(persistedEndpoints) {
+      const item = {
+        [endpoint]: {
+          [resource.id]: resource,
+        },
+      };
+
+      Object.assign(persistedEndpoints, item);
+      this.localPersistenceService.persistItem(this.STORAGE_KEY, persistedEndpoints);
+    }
+  }
+
   paginationInfo: Subject<PokeApiPaginationInfo> = new Subject<PokeApiPaginationInfo>();
 
   constructor(
@@ -25,6 +61,7 @@ export class PokeApiService {
     private env: EnvService,
     @Inject(Logger)
     private logger: Logger,
+    private localPersistenceService: LocalPersistenceService
   ) {  }
 
   protected getUrlFor(endpoint: PokeApiEndpoint) {
@@ -86,16 +123,18 @@ export class PokeApiService {
    * @returns The observable for the request to that resource
    */
   get<Endpoint extends PokeApiEndpoint>(endpoint: Endpoint, id: number | string) {
-    return this.http.get<PokeEndpointMapper[Endpoint]>(
-      `${this.getUrlFor(endpoint)}/${id}`
-    );
+    const persistedResource = this.getLocalResource(endpoint, id);
+    return persistedResource?
+      of(persistedResource) :
+      this.http.get<PokeEndpointMapper[Endpoint]>(
+        `${this.getUrlFor(endpoint)}/${id}`
+      );
   }
 
   put<Endpoint extends PokeApiEndpoint>(endpoint: Endpoint, data: PokeEndpointMapper[Endpoint]) {
     alert("Now I'd send the data with the appropriate structure in a PUT request...\nIf the API supported it -_-'");
-    return of(()=> {
-      this.logger.info.success(`PUT to ${endpoint}`, `Resource edited correctly`, data);
-    });
+    this.setLocalResource(endpoint, data);
+    return of(true);
   }
 
 }
